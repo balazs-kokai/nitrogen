@@ -8,8 +8,11 @@
     <input type="number" id="amount" name="amount"><br><br>
     <label for="webhook">Discord Webhook URL:</label>
     <input type="text" id="webhook" name="webhook"><br><br>
-    <button onclick="generateNitro()">Generate</button>
+    <button onclick="generateNitro()">Generate</button><br><br>
+    <p id="counter">Codes Generated: 0 / 0</p>
     <script>
+        let generatedCount = 0;
+
         function generateCode(length) {
             let result = '';
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -34,6 +37,10 @@
             });
         }
 
+        function updateCounter(generated, amount) {
+            document.getElementById('counter').innerText = `Codes Generated: ${generated} / ${amount}`;
+        }
+
         function generateNitro() {
             const amount = document.getElementById('amount').value;
             const webhook = document.getElementById('webhook').value;
@@ -41,6 +48,8 @@
             for (let i = 0; i < amount; i++) {
                 const code = generateCode(16);
                 codes.push(code);
+                generatedCount++;
+                updateCounter(generatedCount, amount);
             }
             sendToWebhook(webhook, codes);
         }
