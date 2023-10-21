@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Discord Nitro Generator</title>
+</head>
+<body>
+    <label for="amount">Amount of Nitro Codes:</label>
+    <input type="number" id="amount" name="amount"><br><br>
+    <label for="webhook">Discord Webhook URL:</label>
+    <input type="text" id="webhook" name="webhook"><br><br>
+    <button onclick="generateNitro()">Generate</button>
+    <script>
+        function generateCode(length) {
+            let result = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const charactersLength = characters.length;
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+
+        function sendToWebhook(webhook, codes) {
+            codes.forEach(code => {
+                fetch(webhook, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        content: `https://discord.gift/${code}`
+                    })
+                });
+            });
+        }
+
+        function generateNitro() {
+            const amount = document.getElementById('amount').value;
+            const webhook = document.getElementById('webhook').value;
+            const codes = [];
+            for (let i = 0; i < amount; i++) {
+                const code = generateCode(16);
+                codes.push(code);
+            }
+            sendToWebhook(webhook, codes);
+        }
+    </script>
+</body>
+</html>
