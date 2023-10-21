@@ -37,10 +37,6 @@
             });
         }
 
-        function updateCounter(generated, amount) {
-            document.getElementById('counter').innerText = `Codes Generated: ${generated} / ${amount}`;
-        }
-
         function generateNitro() {
             const amount = document.getElementById('amount').value;
             const webhook = document.getElementById('webhook').value;
@@ -52,6 +48,10 @@
                 updateCounter(generatedCount, amount);
             }
             sendToWebhook(webhook, codes);
+        }
+
+        function updateCounter(generated, total) {
+            document.getElementById('counter').innerText = `Codes Generated: ${generated} / ${total}`;
         }
     </script>
 </body>
